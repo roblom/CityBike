@@ -5,3 +5,7 @@ body{
 h1 {
     margin: 0;
 }
+.flexAlign {
+    display: flex;
+    align-items: center;
+}
