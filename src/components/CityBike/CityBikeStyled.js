@@ -72,6 +72,9 @@ const CityBike = styled.div`
         tr:hover td{
             background-color: #999;
             color: #fff;
+            a {
+                color: #fff;
+            }
         }
     }
 

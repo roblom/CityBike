@@ -6,7 +6,7 @@ export default (props) => {
     return <tr title={ title }>
         <td>
             <div className="name">{ location.name }</div>
-            <div className="address"><span>{ location.address }</span> <LocationOnOutlinedIcon /></div>
+            <a className="address" href={ props.mapLink || '#' } target="_blank" rel="noopener noreferrer"><span>{ location.address }</span> <LocationOnOutlinedIcon /></a>
         </td>
         <td className="count">{ bikesAvailable }</td>
         <td className="count">{ docksAvailable }</td>
