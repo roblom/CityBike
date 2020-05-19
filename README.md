@@ -51,3 +51,6 @@ Lister ut alle Oslos stasjoner for bysykkel og viser hvor mange sykler og ledige
     * Integrer denne Appen med Oslonøkkelen ;-) og lag "Sist besøkte"-stasjoner
 * Språkstøtte, i18n
 * Config per bygg-miljø
+* Convert to TypeScript
+* Implement proptypes
+* Last but not least: tests
