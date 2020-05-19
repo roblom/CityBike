@@ -10,7 +10,7 @@ Lister ut alle Oslos stasjoner for bysykkel og viser hvor mange sykler og ledige
     *   npm start
 3. Da bør en nettleser åpne seg for deg på adressen: http://localhost:3000/
 
-## App'n tar utgangspunkt i "create-react-app"
+## App'n tar utgangspunkt i ["Create React App"](https://create-react-app.dev/docs/getting-started/)
 * Alle filer og npm-pakker ang testing er fjernet
 * ServiceWorker er fjernet
 * App.* i rot er fjernet (index.js laster inn CityBike fra Components)
@@ -18,28 +18,29 @@ Lister ut alle Oslos stasjoner for bysykkel og viser hvor mange sykler og ledige
 ## Strukturen
 1. Selve "Applikasjonen" er "CityBike"
     * Laster data
-    * Viser de andre hovedelementent
+    * Viser de andre hovedelementene
         * Header
         * Søk og visningsmodus
         * Resultat
     * Filtrerer lokasjonslisten ved et evt søk
 2. StationList
     * Kobler sammen data fra stasjonslisten og statuslisten
+    * Sorterer listen alfanumerisk
     * Vis enten tabell eller kort-visning
 3. StationRow
-    * En tabell-rad med info per stasjon
+    * Én tabell-rad med info per stasjon
 4. StationCard
-    * Et LI-element med info per stasjon
+    * Ett LI-element med info per stasjon
 
 ## TODO / Tanker om ting å evt jobbe videre med
-* Kartvisning
-    * Fokus på der bruker er nå, om lokasjon er kjent
+* Kartvisning integrert i applikasjonen (nå laster den Google maps i ny fane/vindu)
+    * Kartet sentrert til der bruker er nå, om lokasjon er kjent
     * Kart ved siden av listen og fokus på kartets statsjon når det klikkes i listen
-* Oppdatering av data i bakgrunnen
-* Varsel når en stasjon får nye sykler / blir full
-* Vis stasjoner med feil (der sykler + plasser != kapasitet)
+* Oppdatering av stasjons-data i bakgrunnen
+* Push-varsel når en stasjon får nye sykler / blir full
+* Synliggjør stasjoner med feil (der sykler + plasser != kapasitet)
 * Favoritstasjoner
-* Bakgrunnsbilde på 
+* Bakgrunnsbilde på kort i kortvisning
     * Her kan man leke og la brukerne selv ta vakre bilder til lokasjonene, mange idéer her..
 * Penere tabellvisning
 * Foreslå nærmeste stasjoner dersom ingen treff (når lokasjon er kjent)
