@@ -9,6 +9,10 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import ViewComfyIcon from '@material-ui/icons/ViewComfy';
 
 class CityBikes extends React.Component {
+    constructor(props) {
+        super(props);
+        this.searchInput = React.createRef();
+    }
     state = {
         loading: true,
         locations: null,
@@ -28,6 +32,7 @@ class CityBikes extends React.Component {
 
     setViewMode(viewMode) {
         this.setState( { viewMode: viewMode } );
+        this.focusSearch();
     }
 
     async fetchBikeStationsInfo() {
@@ -54,6 +59,10 @@ class CityBikes extends React.Component {
         this.setState({ filteredLocations: filtered });
     }
 
+    focusSearch = () => {
+        this.searchInput.current.focus();
+    }
+
     render(){        
         const isReady = !this.state.loading && this.state.locations !== null;
         const { locations, statuses, filteredLocations, viewMode } = this.state;
@@ -74,7 +83,7 @@ class CityBikes extends React.Component {
             </header>
 
             <div className="display-options">
-                <SearchField onSearch={ this.handleSearch } placeholder='Søk etter stasjonsnavn' />
+                <SearchField inputRef={ this.searchInput } onSearch={ this.handleSearch } placeholder='Søk etter stasjonsnavn' />
                 <div className="view-mode" title="Visning av stasjoner">
                     <button onClick={ () => this.setViewMode(ViewMode.Card) } disabled={ (viewMode === ViewMode.Card) }><ViewComfyIcon /> Kort</button>
                     <button onClick={ () => this.setViewMode(ViewMode.Table) } disabled={ (viewMode === ViewMode.Table) }><ListAltIcon /> Liste</button>

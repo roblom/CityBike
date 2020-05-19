@@ -6,8 +6,6 @@ export default class SearchField extends React.Component {
     }
 
     handleKeyUp = (evt) => {
-        console.log('handleKeyUp', evt, this.props);
-
         if (this.props.onSearch && !evt.repeat){
             const currentValue = evt.target.value;
             const prevSearchedValue = this.state.prevSearch;
@@ -20,6 +18,6 @@ export default class SearchField extends React.Component {
     }
 
     render(){
-        return <input type="search" autoFocus placeholder={ this.props.placeholder } onKeyUp={ this.handleKeyUp } />
+        return <input type="search" ref={ this.props.inputRef } autoFocus placeholder={ this.props.placeholder } onKeyUp={ this.handleKeyUp } />
     }
 }
