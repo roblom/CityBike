@@ -3,6 +3,8 @@ Læring ifbm bruk av Oslos åpne API for info om de ulike bysykkelstasjonene.
 
 Lister ut alle Oslos stasjoner for bysykkel og viser hvor mange sykler og ledige plasser det er "akkurat nå" per stasjon.
 
+Disclaimer: Dette prosjektet var for meg et hyggelig gjensyn med React.
+
 ## Hvordan starte applikasjonen
 1. Last ned  / klon repo'et
 2. Fra et "command-prompt", gå til mappen "CityBike" og kjør:
