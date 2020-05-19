@@ -10,7 +10,6 @@ const Loading = styled.div`
     text-align: center;
 `;
 
-
 const CityBike = styled.div`
     padding-left: 1em;
 
@@ -45,7 +44,7 @@ const CityBike = styled.div`
         }
     }
 
-    ul {
+    .stations ul {
         padding: 0;
     }
 

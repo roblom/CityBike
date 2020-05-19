@@ -1,7 +1,7 @@
 import React from 'react';
 import StationCard from '../StationCard/StationCard';
 import StationRow from '../StationRow/StationRow';
-import { ViewMode } from '../Common/Types';
+import { ViewMode } from '../../data/Types';
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 import * as S from './StationListStyled';
 
@@ -54,7 +54,7 @@ export default (props) => {
     });
 
     return (
-        <div>
+        <div className="stations">
             { stations.length === 0 ?
                 <S.NoStationsFound>
                     Ingen stasjoner funnet, du må kanskje ta beina fatt? <DirectionsRunIcon />{/* Running person */}
