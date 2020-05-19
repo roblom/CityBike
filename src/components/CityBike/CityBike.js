@@ -1,8 +1,10 @@
 import React from 'react';
 import Stationlist from '../StationList/StationList';
 import SearchField from '../Common/SearchField';
-import { ViewMode } from '../Common/Types';
+import { ViewMode } from '../../data/Types';
 import Config from '../../config/CityBike.Config';
+import { fetchUrl } from '../../helpers/functions';
+import ErrorMessage from './ErrorMessage';
 import * as S from './CityBikeStyled';
 import DirectionsBike from '@material-ui/icons/DirectionsBike';
 import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -13,7 +15,9 @@ class CityBikes extends React.Component {
         super(props);
         this.searchInput = React.createRef();
     }
+
     state = {
+        errors: null,
         loading: true,
         locations: null,
         statuses: null,
@@ -30,24 +34,34 @@ class CityBikes extends React.Component {
         });
     }
 
-    setViewMode(viewMode) {
-        this.setState( { viewMode: viewMode } );
-        this.focusSearch();
-    }
-
+    /**
+     * Load the data for both locations and statuses, parse result, handle errors.
+     */
     async fetchBikeStationsInfo() {
-        const { locations: locationsUrl, statuses: statusesUrl } = Config.apiUrls;
         const apiHeaders = Config.apiHeaders;
-        const locationsResult = await fetch(locationsUrl, apiHeaders);
-        const locationsJson = await locationsResult.json();
+        const { locations: locationsUrl, statuses: statusesUrl } = Config.apiUrls;
+        const { data: locationsResult, error: locationsError } = await fetchUrl(locationsUrl, apiHeaders);
+        const { data: statusesResult, error: statusesError } = await fetchUrl(statusesUrl, apiHeaders);
 
-        const statusesResult = await fetch(statusesUrl, apiHeaders);
-        const statusesJson = await statusesResult.json();
+        if (locationsError !== null || statusesError !== null){
+            this.setState({
+                errors: [
+                    locationsError, 
+                    statusesError
+                ]
+            });
+            return { locations: null, statuses: null }; // if any url fails, nothing will display
+        }
 
         return { 
-            locations: locationsJson.data.stations,
-            statuses: statusesJson.data.stations
+            locations: locationsResult.data.stations,
+            statuses: statusesResult.data.stations
         }
+    }
+
+    setViewMode(viewMode) {
+        this.setState( { viewMode: viewMode } );
+        this.focusSearchField();
     }
 
     handleSearch = (input) => {
@@ -59,13 +73,13 @@ class CityBikes extends React.Component {
         this.setState({ filteredLocations: filtered });
     }
 
-    focusSearch = () => {
+    focusSearchField = () => {
         this.searchInput.current.focus();
     }
 
     render(){        
         const isReady = !this.state.loading && this.state.locations !== null;
-        const { locations, statuses, filteredLocations, viewMode } = this.state;
+        const { locations, statuses, filteredLocations, viewMode, errors } = this.state;
         const stationsToDisplay = filteredLocations || locations;
 
         const stationList = isReady ?
@@ -76,21 +90,27 @@ class CityBikes extends React.Component {
             })
             : null;
         
+            const errorMessages = <ErrorMessage errors={ errors } />;
+            const loadingMessage = !isReady && !errorMessages && <S.Loading>Laster inn data...</S.Loading>;
+        
         return <S.CityBike>
             <header>
                 <DirectionsBike />
                 <h1>Tilgjengelige sykler og låser per stativ</h1>
             </header>
 
-            <div className="display-options">
-                <SearchField inputRef={ this.searchInput } onSearch={ this.handleSearch } placeholder='Søk etter stasjonsnavn' />
-                <div className="view-mode" title="Visning av stasjoner">
-                    <button onClick={ () => this.setViewMode(ViewMode.Card) } disabled={ (viewMode === ViewMode.Card) }><ViewComfyIcon /> Kort</button>
-                    <button onClick={ () => this.setViewMode(ViewMode.Table) } disabled={ (viewMode === ViewMode.Table) }><ListAltIcon /> Liste</button>
+            { !errors &&
+                <div className="display-options">
+                    <SearchField inputRef={ this.searchInput } onSearch={ this.handleSearch } placeholder='Søk etter stasjonsnavn' />
+                    <div className="view-mode" title="Visning av stasjoner">
+                        <button onClick={ () => this.setViewMode(ViewMode.Card) } disabled={ (viewMode === ViewMode.Card) }><ViewComfyIcon /> Kort</button>
+                        <button onClick={ () => this.setViewMode(ViewMode.Table) } disabled={ (viewMode === ViewMode.Table) }><ListAltIcon /> Liste</button>
+                    </div>
                 </div>
-            </div>
+            }
             
-            <div>{ !isReady && <S.Loading>Laster inn data...</S.Loading> }</div>
+            <div>{ loadingMessage }</div>
+            <div>{ errorMessages }</div>
 
             <div className={ 'view-mode-' + this.state.viewMode }>
                 { stationList }
